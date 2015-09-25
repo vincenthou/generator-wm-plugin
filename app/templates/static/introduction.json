@@ -1,0 +1,4 @@
+{
+  "name": "<%= moduleName %>",
+  "title": "<%= moduleName %>_title"
+}

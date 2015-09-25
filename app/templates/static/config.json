@@ -1,0 +1,9 @@
+{
+  "name": "<%= moduleName %>",
+  "states": [
+    "<%= moduleName %>-index"
+  ],
+  "resources": {
+    "index": "/api/<%= moduleName %>/site/index"
+  }
+}
