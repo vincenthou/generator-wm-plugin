@@ -8,7 +8,8 @@ function generateDestFile(filePath) {
     this.templatePath(filePath),
     this.destinationPath(filePath),
     {
-      moduleName: this.props.moduleName
+      moduleName: this.props.moduleName,
+      upperModuleName: this.props.upperModuleName
     }
   );
 }
@@ -39,9 +40,20 @@ module.exports = yeoman.generators.Base.extend({
       name: 'hasMobilePage',
       message: 'Do you need to create mobile pages?',
       default: false
+    },{
+      type: 'confirm',
+      name: 'useCoffeeForMobile',
+      message: 'Do you need to use coffee for creating mobile pages?',
+      default: false
+    },{
+      type: 'confirm',
+      name: 'useScssForMobile',
+      message: 'Do you need to use scss for creating mobile pages?',
+      default: false
     }];
 
     this.prompt(prompts, function (props) {
+      props.upperModuleName = props.moduleName.charAt(0).toUpperCase() + props.moduleName.slice(1)
       this.props = props;
       // To access props later use this.props.someOption;
       this.log("Your module name is " + props.moduleName)
@@ -76,13 +88,59 @@ module.exports = yeoman.generators.Base.extend({
         'backend/config/main.php',
         'backend/controllers/SiteController.php',
         'backend/job/Demo.php',
-        'backend/models/.gitignore',
+        'backend/models/.gitkeep',
         'backend/Install.php',
         'backend/Module.php',
       ].forEach(function(file){
         generateDestFile.call(self, file);
       });
-    }
+    },
+
+    frontend: function() {
+      var self = this;
+      [
+        'static/controllers/indexCtrl.coffee',
+        'static/directives/.gitkeep',
+        'static/i18n/locate-en_us.json',
+        'static/i18n/locate-zh_cn.json',
+        'static/partials/index.html',
+        'static/styles/demo.scss',
+        'static/config.json',
+        'static/introduction.html',
+        'static/introduction.json'
+      ].forEach(function(file){
+        generateDestFile.call(self, file);
+      });
+    },
+
+    webapp: function () {
+      var self = this;
+      if (this.hasMobilePage) {
+        [
+          'webapp/controllers/SiteController.php',
+          'webapp/job/.gitkeep',
+          'webapp/utils/.gitkeep',
+          'webapp/views/.gitkeep',
+          'webapp/Module.php',
+          'webapp/static/fonts/.gitkeep',
+          'webapp/static/images/.gitkeep'
+        ].forEach(function(file){
+          generateDestFile.call(self, file);
+        });
+
+        if (this.useCoffeeForMobile) {
+          generateDestFile.call(this, 'webapp/static/coffee/app.coffee');
+        } else {
+          generateDestFile.call(this, 'webapp/static/js/app.js');
+        }
+
+        if (this.useScssForMobile) {
+          generateDestFile.call(this, 'webapp/static/scss/app.scss');
+        } else {
+          generateDestFile.call(this, 'webapp/static/css/app.css');
+        }
+      }
+    },
   },
 
   conflicts: function() {

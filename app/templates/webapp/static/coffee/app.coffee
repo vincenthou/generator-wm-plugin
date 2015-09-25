@@ -1,3 +1,3 @@
 (->
-  alert 'test'
+  alert 'This is <%= moduleName %> module'
 )()

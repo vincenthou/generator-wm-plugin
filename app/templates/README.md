@@ -1,4 +1,4 @@
-# <%= moduleName %> Module Development Guide
+# <%= upperModuleName %> Module Development Guide
 
 ## Get Started
 
