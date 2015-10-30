@@ -114,8 +114,8 @@ module.exports = yeoman.generators.Base.extend({
     },
 
     webapp: function () {
-      var self = this;
-      if (this.hasMobilePage) {
+      var self = this, props = this.props
+      if (props.hasMobilePage) {
         [
           'webapp/controllers/SiteController.php',
           'webapp/job/.gitkeep',
@@ -128,13 +128,13 @@ module.exports = yeoman.generators.Base.extend({
           generateDestFile.call(self, file);
         });
 
-        if (this.useCoffeeForMobile) {
+        if (props.useCoffeeForMobile) {
           generateDestFile.call(this, 'webapp/static/coffee/app.coffee');
         } else {
           generateDestFile.call(this, 'webapp/static/js/app.js');
         }
 
-        if (this.useScssForMobile) {
+        if (props.useScssForMobile) {
           generateDestFile.call(this, 'webapp/static/scss/app.scss');
         } else {
           generateDestFile.call(this, 'webapp/static/css/app.css');
